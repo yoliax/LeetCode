@@ -31,7 +31,7 @@
 
 using namespace std;
 
-int eraseOverlapIntervals(<vector<int>> &intervals) {
+int eraseOverlapIntervals(vector<vector<int>> &intervals) {
     if (intervals.empty()) {
         return 0;
     }
