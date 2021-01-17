@@ -22,20 +22,44 @@
 //
 
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
-int binarySearch(vector<int> &nums, int target, lower) {
-    int left = 0, right = nums.size() - 1;
-    while (left < right) {
+int binarySearch(vector<int> &nums, int target, bool lower) {
+    int left = 0, right = nums.size() - 1, ans = nums.size();
+    while (left <= right) {
         int mid = (left + right) / 2;
+        if (nums[mid] > target || (lower && nums[mid] >= target)) {
+            right = mid - 1;
+            ans = mid;
+        } else {
+            left = mid + 1;
+        }
     }
+    return ans;
 }
 
-vector<int> searchRange(vector<int> &nums, int target) {
 
+vector<int> searchRange(vector<int> &nums, int target) {
+    int leftIdx = binarySearch(nums, target, true);
+    int rightIdx = binarySearch(nums, target, false) - 1;
+    if (leftIdx <= rightIdx && rightIdx < nums.size() && nums[leftIdx] == target && nums[rightIdx] == target) {
+        return {leftIdx, rightIdx};
+    }
+    return {-1, -1};
 }
 
 int main() {
+    vector<int> nums1 = {5, 7, 7, 8, 10};
+    vector<int> res = searchRange(nums1, 8);
+    cout << "[" << res[0] << ", " << res[1] << "]" << endl;
 
+    vector<int> nums2 = {5,7,7,8,8,10};
+    res = searchRange(nums2, 6);
+    cout << "[" << res[0] << ", " << res[1] << "]" << endl;
+
+    vector<int> nums3 = {};
+    res = searchRange(nums3, 0);
+    cout << "[" << res[0] << ", " << res[1] << "]" << endl;
 }
